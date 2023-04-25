@@ -196,38 +196,52 @@ def importar_json():
         arquivo.write(res.content)
     arquivo.close()
     
-    arquivo_json = json.loads(open(nome_arquivo))
-    
-    colunas = []
-    coluna = []
-    for data in arquivo_json:
-        coluna = list(data.keys())
-        for col in coluna:
-            if col not in colunas:
-                colunas.append(col)
-
-    value = []
-    valores = []
-    for data in arquivo_json:
-        for i in colunas:
-            value.append(str(dict(data).get(i)))
-        valores.append(list(value))
-        value.clear()
+    arquivo_json = json.load(open(nome_arquivo))
     
     nome_tabela = nome_arquivo.split(".")[0]
     
-    resultado = executa_comando(f"SELECT MAX(id) from {nome_tabela}")
-    ultimo_id = resultado[0][0]
+    colunas_tabelas = {
+        "carros":
+            ["carroid", 
+             "marca_modelo",
+             "quilometragem",
+             "ano",
+             "placa",
+             "valor_compra",
+             "valor_sugerido",
+             "status"],
+        "carros_vendidos":
+            ["carroid",
+             "clienteid",
+             "valor_venda",
+             "data_venda"],
+        "clientes":
+            ["clienteid",
+             "nome",
+             "data_nascimento",
+             "cpf"],
+        "usuarios":
+            ["userid",
+             "usuario",
+             "senha"]}
     
-    query = f'INSERT INTO {nome_tabela} VALUES (?,?,?)'
+    colunas = colunas_tabelas[nome_tabela]
+    for linha in arquivo_json[nome_tabela]:
+        valores = tuple(linha[c] for c in colunas)
+        valores_query = tuple("?" * len(colunas))
+        valores_query = str(valores_query).replace("'", "")
+        executa_comando(f"INSERT INTO {nome_tabela} VALUES {str(valores_query)}", valores)
     
-    global conexao
-    cursor = conexao.cursor()
-    cursor.executemany(query, valores)
-    resultado = cursor.fetchall()
-    cursor.close()
-    conexao.commit()
+    print("Dados importados com sucesso!\n")
+    print(f"Tabela: {nome_tabela}")    
     
+    resultado = executa_comando(f"SELECT * FROM {nome_tabela}")
+    for linha in resultado:
+        print("\n")
+        for indice, coluna in enumerate(colunas_tabelas[nome_tabela]):
+            print(f"{coluna}: {linha[indice]}")
+    print("\n")
+    valida_input("Digite 0 para voltar ao menu: ", int, [0])
 
 def exportar_json():
     colunas_tabelas = {
@@ -255,9 +269,9 @@ def exportar_json():
              "usuario",
              "senha"]}
     
-    result = {}
     lista_arquivos = []
     for tabela in colunas_tabelas:
+        result = {}
         result[tabela] = []
         resultado = executa_comando(f"SELECT * FROM {tabela}")
         for tupla in resultado:
@@ -267,7 +281,7 @@ def exportar_json():
             result[tabela].append(valores)
         arquivo_json = open(f"{tabela}.json", "w")
         lista_arquivos.append(f"{tabela}.json")
-        resultado_json = json.dumps(result[tabela])
+        resultado_json = json.dumps(result)
         arquivo_json.write(resultado_json)
         arquivo_json.close()
     with ZipFile("resultado.zip", "w") as arquivo_zip:
@@ -291,14 +305,15 @@ resultado = executa_comando("SELECT COUNT(usuario) AS count_usuarios FROM usuari
 
 if resultado[0][0] == 0:
     print("Primeiro acesso identificado! Por favor cadastre um novo usuario")
-    print("Após o cadastro você já poderá fazer login")
+    print("Após o cadastro você já poderá fazer login\n")
     cadastra_usuario()
     
 valida_login()
 
 opcao = 1
 while opcao:
-    print("")
+    system("cls")
+    print("Procurou? Achou! - Venda de Veiculos\n")
     print("[1] Cadastrar carro")
     print("[2] Carros na loja")
     print("[3] Carros vendidos")
@@ -317,26 +332,36 @@ while opcao:
         conexao.close()
         break
     elif opcao == 1:
+        system("cls")
         cadastra_carro()
     elif opcao == 2:
+        system("cls")
         relatorio_carros()
     elif opcao == 3:
+        system("cls")
         relatorio_vendidos()
     elif opcao == 4:
+        system("cls")
         venda_carro()
     elif opcao == 5:
+        system("cls")
         cadastra_cliente()
     elif opcao == 6:
+        system("cls")
         relatorio_clientes()
     elif opcao == 7:
+        system("cls")
         importar_json()
     elif opcao == 8:
+        system("cls")
         exportar_json()
     elif opcao == 9:
         pass
     elif opcao == 10:
+        system("cls")
         cadastra_usuario()
     elif opcao == 11:
+        system("cls")
         exportar_json()
     
     
