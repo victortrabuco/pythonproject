@@ -1,1 +1,1 @@
-{"carros": [{"carroid": 1, "marca_modelo": "Peugeot 206 Presence", "quilometragem": 130000, "ano": 2008, "placa": "DSF4703", "valor_compra": 12000.0, "valor_sugerido": 15600.0, "status": "Disponivel"}, {"carroid": 2, "marca_modelo": "Volkswagen Golf GTI", "quilometragem": 40000, "ano": 2018, "placa": "ABCD234", "valor_compra": 70000.0, "valor_sugerido": 91000.0, "status": "Vendido"}]}
+{"carros": [{"carroid": 1, "marca_modelo": "Chevrolet Onix", "quilometragem": 70000, "ano": 2015, "placa": "ABC1234", "valor_compra": 45000.0, "valor_sugerido": 58500.0, "status": "Vendido"}]}

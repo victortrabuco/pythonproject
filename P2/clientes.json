@@ -1,1 +1,1 @@
-{"clientes": [{"clienteid": 1, "nome": "Victor Fomm Trabuco", "data_nascimento": "16/06/1995", "cpf": "46013225885"}, {"clienteid": 2, "nome": "Teste Cliente", "data_nascimento": "12/01/1995", "cpf": "12345678912"}]}
+{"clientes": [{"clienteid": 1, "nome": "Victor Trabuco", "data_nascimento": "16/06/1995", "cpf": "46013225885"}]}
